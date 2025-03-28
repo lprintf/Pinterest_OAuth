@@ -1,10 +1,7 @@
 import os
 import requests
 from fastapi import FastAPI, HTTPException, Query
-from dotenv import load_dotenv
-
-# 加载环境变量
-load_dotenv()
+import base64
 
 # Pinterest API 配置
 CLIENT_ID = os.getenv("PINTEREST_CLIENT_ID")
@@ -12,6 +9,10 @@ CLIENT_SECRET = os.getenv("PINTEREST_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("PINTEREST_REDIRECT_URI")
 OAUTH_URL = "https://www.pinterest.com/oauth/"
 TOKEN_URL = "https://api.pinterest.com/v5/oauth/token"
+headers = {
+    "Authorization": f"Basic {base64.b64encode(f'{CLIENT_ID}:{CLIENT_SECRET}'.encode()).decode()}",
+    "Content-Type": "application/x-www-form-urlencoded",
+    }
 
 app = FastAPI()
 
@@ -22,25 +23,28 @@ def login():
         f"{OAUTH_URL}?response_type=code"
         f"&client_id={CLIENT_ID}"
         f"&redirect_uri={REDIRECT_URI}"
-        f"&scope=boards:read,pins:read"  # 请求的权限
+        f"&scope=boards:read,pins:read,user_accounts:read,ads:read"  # 请求的权限
     )
     return {"auth_url": auth_url}
 
 # 处理 Pinterest 授权回调，获取 access_token
 @app.get("/callback")
 def callback(code: str = Query(None)):
+    print(code)
     if not code:
         raise HTTPException(status_code=400, detail="Authorization code not found")
 
     data = {
         "grant_type": "authorization_code",
         "code": code,
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
+        # "client_id": CLIENT_ID,
+        # "client_secret": CLIENT_SECRET,
         "redirect_uri": REDIRECT_URI,
+        "continuous_refresh": False
     }
-
-    response = requests.post(TOKEN_URL, data=data)
+    
+    print(data)
+    response = requests.post(TOKEN_URL, data=data, headers=headers)
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.json())
 
