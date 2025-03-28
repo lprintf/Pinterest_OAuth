@@ -1,7 +1,8 @@
 import os
 import requests
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 import base64
+import json
 
 # Pinterest API 配置
 CLIENT_ID = os.getenv("PINTEREST_CLIENT_ID")
@@ -30,10 +31,16 @@ def login():
 
 # 处理 Pinterest 授权回调，获取 access_token
 @app.get("/callback")
-def callback(code: str = Query(None)):
-    print(code)
+def callback(request: Request, code: str = Query(None)):
     if not code:
         raise HTTPException(status_code=400, detail="Authorization code not found")
+    print(
+        "Authorization code received:",
+        code)
+    print(
+        "Request headers:",
+        request.headers.items()
+    )
 
     data = {
         "grant_type": "authorization_code",
@@ -51,6 +58,8 @@ def callback(code: str = Query(None)):
 
     token_data = response.json()
     # save token_data to database or session for later use
+    # with open("token.json", "w") as f:
+    #     json.dump(token_data, f)
     print(token_data)
     return {"access_token": token_data.get("access_token")}
 
