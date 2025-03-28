@@ -27,7 +27,7 @@ def login():
         f"&client_id={CLIENT_ID}"
         f"&redirect_uri={REDIRECT_URI}"
         # f"&scope=boards:read,pins:read,user_accounts:read,ads:read"  # 请求的权限
-        f"&scope=boards:read,boards:write,pins:read,pins:write,user_accounts:read,campaigns:read,campaigns:write,ad_groups:read,ad_groups:write,ads:read,ads:write,analytics:read,product_groups:read,product_groups:write,feeds:read,feeds:write"
+        f"&scope=user_accounts:read,boards:read,boards:write,pins:read,pins:write,ads:read,ads:write,analytics:read,catalogs:write,catalogs:read"
     )
     return {"auth_url": auth_url}
 

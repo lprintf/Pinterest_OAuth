@@ -69,7 +69,7 @@
 
 1. 确保已经设置了所有需要的环境变量。
 2. 运行 FastAPI 应用。
-3. 访问 `/login` 端点获取授权 URL 并进行跳转。
+3. 访问 `/login` 端点获取授权 URL 并进行跳转。URL通常固定，可直接在浏览器中打开。
 4. 授权成功后，Pinterest 会重定向到你设置的 `REDIRECT_URI`，并携带授权码。
 5. 在回调端点 `/callback` 中处理授权码，获取 access_token 和用户信息。
 
