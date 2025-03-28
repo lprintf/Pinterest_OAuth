@@ -23,7 +23,8 @@ def login():
         f"{OAUTH_URL}?response_type=code"
         f"&client_id={CLIENT_ID}"
         f"&redirect_uri={REDIRECT_URI}"
-        f"&scope=boards:read,pins:read,user_accounts:read,ads:read"  # 请求的权限
+        # f"&scope=boards:read,pins:read,user_accounts:read,ads:read"  # 请求的权限
+        f"&scope=boards:read,boards:write,pins:read,pins:write,user_accounts:read,campaigns:read,campaigns:write,ad_groups:read,ad_groups:write,ads:read,ads:write,analytics:read,product_groups:read,product_groups:write,feeds:read,feeds:write"
     )
     return {"auth_url": auth_url}
 
@@ -40,7 +41,7 @@ def callback(code: str = Query(None)):
         # "client_id": CLIENT_ID,
         # "client_secret": CLIENT_SECRET,
         "redirect_uri": REDIRECT_URI,
-        "continuous_refresh": False
+        "continuous_refresh": True
     }
     
     print(data)
