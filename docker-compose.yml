@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    image: lprintf/pinterest-oauth:v0.0.1
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app/output
+    environment:
+      PINTEREST_CLIENT_ID: ${PINTEREST_CLIENT_ID}
+      PINTEREST_CLIENT_SECRET: ${PINTEREST_CLIENT_SECRET}
+      PINTEREST_REDIRECT_URI: ${PINTEREST_REDIRECT_URI}
