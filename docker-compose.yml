@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app/output
+      - .:/app
     environment:
       PINTEREST_CLIENT_ID: ${PINTEREST_CLIENT_ID}
       PINTEREST_CLIENT_SECRET: ${PINTEREST_CLIENT_SECRET}
